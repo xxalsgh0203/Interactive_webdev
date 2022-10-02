@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            transition : background 2.5s cubic-bezier(0.075, 0.82, 0.165, 1)
+        }
+        h1{
+            font-size: 50px;
+            font-weight: bold;
+            overflow-x: hidden;
+        }
+        button {
+            font-size : 20px;
+            padding: 10px 30px;
+            cursor: pointer;
+        }
+        .navi {
+            position: fixed;
+            left: 50%;
+            top: 46%;
+            transform: translate(-50%, -50%);
+        }
+        section {
+            height: 100vh;
+            width: 100vw;
+            border-top: 2px dashed rgba(0,0,0,.5);
+        }
+    </style>
+    <script>
+        window.onload = function(){
+            var prevBtn = document.querySelector(".prevbtn");
+            var nextBtn = document.querySelector(".nextbtn");
+            var note = document.querySelector(".note");
+            var bgColorArr = ["#85FFBD", "#FFFB7D", "#E0C3FC", "#00DBDE"];
+            var pagenum = 0;
+            var totalpage = bgColorArr.length;
+            var section = document.getElementsByTagName("section");
+
+            prevBtn.addEventListener("click", ()=>{
+                if(pagenum > 0){
+                    pagenum--;
+                }
+                else{
+                    pagenum = totalpage;
+                }
+                changePage();
+                window.scrollTo(
+                    {
+                        top: section[pagenum].offsetTop,
+                        behavior: 'smooth'
+                    }
+                )
+            });
+            nextBtn.addEventListener("click", ()=>{
+                if(pagenum < totalpage - 1){
+                    pagenum++;
+                }
+                else{
+                    pagenum = 0;
+                }
+                changePage();
+                window.scrollTo(
+                    {
+                        top: section[pagenum].offsetTop,
+                        behavior: 'smooth'
+                    }
+                )
+            });
+
+            function changePage(){
+                note.innerHTML = (pagenum+1) + "페이지 입니다";
+                document.getElementsByTagName("body")[0].style.background = bgColorArr[pagenum];
+
+ 
+            }
+
+            changePage();
+
+            window.addEventListener("scroll", function(event){
+                var scroll = this.scrollY;
+
+                for(var i=0; i<totalpage; i++){
+                    if(scroll > section[i].offsetTop - window.outerHeight/3 && scroll < section[i].offsetTop - window.outerHeight / 3 + section[i].offsetHeight){
+                        pagenum = i;
+                        break;
+                    }
+                }
+
+                changePage();
+            })
+    }
+    </script>
+</head>
+<body>
+    <div class="navi">
+        <button class="prevbtn">이전 페이지</button>
+        <button class="nextbtn">다음 페이지</button>
+        <h1 class="note">0 페이지 입니다</h1>
+    </div>
+    <section>
+        <h2>page 1</h2>
+      </section>
+
+      <section>
+        <h2>page 2</h2>
+      </section>
+
+      <section>
+        <h2>page 3</h2>
+      </section>
+
+      <section>
+        <h2>page 4</h2>
+      </section>
+</body>
+</html>
