@@ -32,10 +32,10 @@
       .image {
         position: fixed;
         right: 5%;
-        top: 20%;
+        top: 2%;
         display: none;
         /* opacity: 0; */
-        width: 800px;
+        width: 600px;
         /* transition : all 1s ease-in-out; */
       }
 
@@ -55,14 +55,67 @@
         line-height: 24px;
       }
 
+      .pointWrap {
+        position: fixed;
+        right: 3vw;
+        top: 40%;
+        z-index: 100;
+      }
+
+      .pointWrap li {
+        list-style: none;
+        width: 12px;
+        height: 12px;
+        margin-top: 15px;
+        cursor: pointer;
+        background-color: #666;
+        border-radius: 50%;
+      }
+
+      .pointWrap li.active{
+        background-color: blueviolet;
+      }
 
     </style>
+
     <script>
       window.onload = function(){
-   
+        var section = document.getElementsByTagName("section");
+        var pointBtn = document.querySelectorAll('.pointWrap li');
+
+        var pageNum = 0;
+        var totalNum = section.length;
+
+        window.addEventListener("scroll", function(){
+            var scroll = this.scrollY;
+
+            for(var i=0; i<totalNum; i++){
+                if(scroll > section[i].offsetTop - window.outerHeight/1.5 && scroll < section[i].offsetTop + section[i].offsetHeight - window.outerHeight/1.5){
+                    pageNum = i;
+                    break;
+                }
+            }
+
+            pageChangeFunc();
+        });
+
+        // 버튼 누르면 페이지 이동하는 부분 구현하기
+
+        function pageChangeFunc(){
+
+            for(var i=0; i<totalNum; i++){
+                section[i].classList.remove("active");
+                pointBtn[i].classList.remove("active");
+            }
+            section[pageNum].classList.add("active");
+            pointBtn[pageNum].classList.add("active");
+        }
+
+        pageChangeFunc();
       }
       
     </script>
+
     </head>
     <body>
       <ul class="pointWrap">
